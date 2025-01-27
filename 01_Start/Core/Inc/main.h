@@ -31,7 +31,8 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "Led.h"
+#include "Key.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -63,7 +64,8 @@ void Error_Handler(void);
 #define KEY_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
-
+#define INIT_NOT_SUCCESS (0)
+#define INIT_SUCCESS     (1)
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
