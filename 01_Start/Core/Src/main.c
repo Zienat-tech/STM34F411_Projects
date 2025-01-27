@@ -94,8 +94,28 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-	  HAL_Delay(500);
+	  /* 按下时闪烁 */
+	  if(GPIO_PIN_RESET == HAL_GPIO_ReadPin(KEY_GPIO_Port, GPIO_PIN_0))
+	  {
+		  HAL_Delay(10);
+		  if(GPIO_PIN_RESET == HAL_GPIO_ReadPin(KEY_GPIO_Port, GPIO_PIN_0))
+		  {
+			  HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+			  HAL_Delay(500);
+		  }
+
+	  }
+	  /* 松开时常亮 */
+	  if(GPIO_PIN_SET == HAL_GPIO_ReadPin(KEY_GPIO_Port, GPIO_PIN_0))
+	  {
+		  HAL_Delay(10);
+		  if(GPIO_PIN_SET == HAL_GPIO_ReadPin(KEY_GPIO_Port, GPIO_PIN_0))
+		  {
+			  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
+			  HAL_Delay(500);
+		  }
+
+	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -120,13 +140,12 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLM = 8;
-  RCC_OscInitStruct.PLL.PLLN = 100;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLM = 12;
+  RCC_OscInitStruct.PLL.PLLN = 96;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 4;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
